@@ -97,10 +97,10 @@ def do_eval_slidingclips(sess, vs_eval_op, model, movie_length_info, iter_step, 
     all_retrievd = 0.0
     for movie_name in model.test_set.movie_names:
         movie_length=movie_length_info[movie_name.split(".")[0]]
-        print "Test movie: "+movie_name+"....loading movie data"
+        print("Test movie: "+movie_name+"....loading movie data")
         movie_clip_featmaps, movie_clip_sentences=model.test_set.load_movie_slidingclip(movie_name, 16)
-        print "sentences: "+ str(len(movie_clip_sentences))
-        print "clips: "+ str(len(movie_clip_featmaps))
+        print("sentences: "+ str(len(movie_clip_sentences)))
+        print("clips: "+ str(len(movie_clip_featmaps)))
         sentence_image_mat=np.zeros([len(movie_clip_sentences), len(movie_clip_featmaps)])
         sentence_image_reg_mat=np.zeros([len(movie_clip_sentences), len(movie_clip_featmaps), 2])
         for k in range(len(movie_clip_sentences)):
@@ -139,13 +139,13 @@ def do_eval_slidingclips(sess, vs_eval_op, model, movie_length_info, iter_step, 
             correct_num_10 = compute_IoU_recall_top_n_forreg(10, IoU, sentence_image_mat, sentence_image_reg_mat, sclips, iclips)
             correct_num_5 = compute_IoU_recall_top_n_forreg(5, IoU, sentence_image_mat, sentence_image_reg_mat, sclips, iclips)
             correct_num_1 = compute_IoU_recall_top_n_forreg(1, IoU, sentence_image_mat, sentence_image_reg_mat, sclips, iclips)
-            print movie_name+" IoU="+str(IoU)+", R@10: "+str(correct_num_10/len(sclips))+"; IoU="+str(IoU)+", R@5: "+str(correct_num_5/len(sclips))+"; IoU="+str(IoU)+", R@1: "+str(correct_num_1/len(sclips))
+            print(movie_name+" IoU="+str(IoU)+", R@10: "+str(correct_num_10/len(sclips))+"; IoU="+str(IoU)+", R@5: "+str(correct_num_5/len(sclips))+"; IoU="+str(IoU)+", R@1: "+str(correct_num_1/len(sclips)))
             all_correct_num_10[k]+=correct_num_10
             all_correct_num_5[k]+=correct_num_5
             all_correct_num_1[k]+=correct_num_1
         all_retrievd+=len(sclips)
     for k in range(len(IoU_thresh)):
-        print " IoU="+str(IoU_thresh[k])+", R@10: "+str(all_correct_num_10[k]/all_retrievd)+"; IoU="+str(IoU_thresh[k])+", R@5: "+str(all_correct_num_5[k]/all_retrievd)+"; IoU="+str(IoU_thresh[k])+", R@1: "+str(all_correct_num_1[k]/all_retrievd)
+        print(" IoU="+str(IoU_thresh[k])+", R@10: "+str(all_correct_num_10[k]/all_retrievd)+"; IoU="+str(IoU_thresh[k])+", R@5: "+str(all_correct_num_5[k]/all_retrievd)+"; IoU="+str(IoU_thresh[k])+", R@1: "+str(all_correct_num_1[k]/all_retrievd))
         test_result_output.write("Step "+str(iter_step)+": IoU="+str(IoU_thresh[k])+", R@10: "+str(all_correct_num_10[k]/all_retrievd)+"; IoU="+str(IoU_thresh[k])+", R@5: "+str(all_correct_num_5[k]/all_retrievd)+"; IoU="+str(IoU_thresh[k])+", R@1: "+str(all_correct_num_1[k]/all_retrievd)+"\n")
 
 def run_training():
@@ -179,7 +179,7 @@ def run_training():
                 print('Step %d: loss = %.3f (%.3f sec)' % (step, loss_value, duration))
 
             if (step+1) % 2000 == 0:
-                print "Start to test:-----------------\n"
+                print("Start to test:-----------------\n")
                 movie_length_info=pickle.load(open("./video_allframes_info.pkl"))
                 do_eval_slidingclips(sess, vs_eval_op, model, movie_length_info, step+1, test_result_output)
 
